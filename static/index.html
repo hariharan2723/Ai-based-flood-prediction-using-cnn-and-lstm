@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI HydroGuard — Deep Learning Flood Prediction System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Animated Particles & Gradients -->
+    <div class="bg-decorations">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="app-layout">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-water-waves"></i>
+                </div>
+                <div class="brand-text">
+                    <h2>HydroGuard <span>AI</span></h2>
+                    <p>CNN-LSTM Flood Warning</p>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-tab="tab-overview">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Overview</span>
+                </button>
+                <button class="nav-btn" data-tab="tab-prediction">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                    <span>Live Prediction</span>
+                </button>
+                <button class="nav-btn" data-tab="tab-heatmap">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>Risk Heatmap</span>
+                </button>
+                <button class="nav-btn" data-tab="tab-analytics">
+                    <i class="fa-solid fa-chart-diagram"></i>
+                    <span>Model Analytics</span>
+                </button>
+                <button class="nav-btn" data-tab="tab-history">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Prediction Logs</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-status">
+                <div class="status-indicator">
+                    <span class="pulse-dot"></span>
+                    <span class="status-text">PyTorch Model Connected</span>
+                </div>
+                <div class="version-tag">Review 2 Demo • v2.4</div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Top App Bar -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1 id="current-tab-title">Early Flood Warning System</h1>
+                    <p id="current-tab-desc">Hybrid Deep Learning (CNN Spatial + LSTM Temporal Integration)</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" id="btn-quick-run">
+                        <i class="fa-solid fa-play"></i> Quick Test
+                    </button>
+                    <div class="server-badge" id="server-status-badge">
+                        <i class="fa-solid fa-circle-check"></i> Backend Connected
+                    </div>
+                </div>
+            </header>
+
+            <!-- TAB 1: OVERVIEW -->
+            <section id="tab-overview" class="tab-pane active">
+                <!-- Metrics Bar -->
+                <div class="metrics-grid">
+                    <div class="metric-card glass-card">
+                        <div class="metric-icon cnn">
+                            <i class="fa-solid fa-satellite"></i>
+                        </div>
+                        <div class="metric-info">
+                            <span class="label">CNN Module</span>
+                            <span class="value">Spatial Extractor</span>
+                            <span class="sub">32x32 Satellite RGB</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card glass-card">
+                        <div class="metric-icon lstm">
+                            <i class="fa-solid fa-cloud-showers-heavy"></i>
+                        </div>
+                        <div class="metric-info">
+                            <span class="label">LSTM Module</span>
+                            <span class="value">Temporal Sequence</span>
+                            <span class="sub">12-Hour Rainfall Series</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card glass-card">
+                        <div class="metric-icon accuracy">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <div class="metric-info">
+                            <span class="label">Validation Accuracy</span>
+                            <span class="value">91.25%</span>
+                            <span class="sub">F1-Score: 90.87%</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card glass-card">
+                        <div class="metric-icon speed">
+                            <i class="fa-solid fa-stopwatch"></i>
+                        </div>
+                        <div class="metric-info">
+                            <span class="label">Inference Speed</span>
+                            <span class="value">&lt; 15 ms</span>
+                            <span class="sub">Real-Time Prediction</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline Diagram & Feature Breakdown -->
+                <div class="grid-2-col">
+                    <div class="glass-card panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-network-wired"></i> Hybrid CNN-LSTM Pipeline Architecture</h3>
+                        </div>
+                        <div class="architecture-diagram">
+                            <div class="arch-block">
+                                <div class="arch-box cnn-box">
+                                    <i class="fa-solid fa-satellite"></i>
+                                    <span>Satellite Img</span>
+                                    <small>32x32x3 RGB</small>
+                                </div>
+                                <i class="fa-solid fa-arrow-right arch-arrow"></i>
+                                <div class="arch-box cnn-layer">
+                                    <span>3-Layer CNN</span>
+                                    <small>Conv2D + MaxPool</small>
+                                </div>
+                                <i class="fa-solid fa-arrow-right arch-arrow"></i>
+                                <div class="arch-box">
+                                    <span>64D Spatial</span>
+                                </div>
+                            </div>
+
+                            <div class="arch-join">
+                                <div class="fusion-line"></div>
+                                <div class="fusion-badge">Concatenation (96D Vector)</div>
+                                <div class="fusion-line"></div>
+                            </div>
+
+                            <div class="arch-block">
+                                <div class="arch-box lstm-box">
+                                    <i class="fa-solid fa-cloud-showers-heavy"></i>
+                                    <span>Rainfall T1..T12</span>
+                                    <small>Time Series</small>
+                                </div>
+                                <i class="fa-solid fa-arrow-right arch-arrow"></i>
+                                <div class="arch-box lstm-layer">
+                                    <span>PyTorch LSTM</span>
+                                    <small>32 Hidden Units</small>
+                                </div>
+                                <i class="fa-solid fa-arrow-right arch-arrow"></i>
+                                <div class="arch-box">
+                                    <span>32D Temporal</span>
+                                </div>
+                            </div>
+
+                            <div class="arch-output-stage">
+                                <i class="fa-solid fa-arrow-down arch-arrow"></i>
+                                <div class="arch-box fc-box">
+                                    <span>Dense FC + Dropout (0.2) + Sigmoid</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-down arch-arrow"></i>
+                                <div class="output-pill">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <span>Flood Risk Probability [0.0 - 1.0]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-lightbulb"></i> Key Project Highlights</h3>
+                        </div>
+                        <div class="highlights-list">
+                            <div class="highlight-item">
+                                <div class="icon-wrap"><i class="fa-solid fa-layer-group"></i></div>
+                                <div>
+                                    <h4>Multi-Modal Data Integration</h4>
+                                    <p>Combines satellite spectral imagery for land/water surface detection with continuous precipitation temporal series.</p>
+                                </div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="icon-wrap"><i class="fa-solid fa-microchip"></i></div>
+                                <div>
+                                    <h4>PyTorch Deep Learning Engine</h4>
+                                    <p>Powered by end-to-end trained CNN-LSTM binary classification neural network loaded directly in Python memory.</p>
+                                </div>
+                            </div>
+                            <div class="highlight-item">
+                                <div class="icon-wrap"><i class="fa-solid fa-chart-line"></i></div>
+                                <div>
+                                    <h4>Real-Time Decision Intelligence</h4>
+                                    <p>Generates instant safety classifications (SAFE, MODERATE, HIGH FLOOD RISK) along with localized spatial risk score.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: LIVE PREDICTION -->
+            <section id="tab-prediction" class="tab-pane">
+                
+                <!-- Climate Presets Bar -->
+                <div class="glass-card presets-bar">
+                    <span class="preset-label"><i class="fa-solid fa-sliders"></i> Quick Scenarios:</span>
+                    <div class="preset-buttons" id="preset-buttons-container">
+                        <!-- Loaded dynamically from JS -->
+                    </div>
+                </div>
+
+                <div class="grid-prediction">
+                    
+                    <!-- Form Controls -->
+                    <div class="glass-card panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-sliders"></i> Input Parameters</h3>
+                            <button class="btn btn-sm btn-outline" id="btn-reset-inputs">Reset</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-location-dot"></i> Target Region / Location</label>
+                            <input type="text" id="input-location" class="form-control" value="District Zone A-1 (River Delta)">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="slider-header">
+                                <label><i class="fa-solid fa-satellite"></i> Satellite Water-Body Coverage Indicator</label>
+                                <span class="slider-val" id="water-val-display">65%</span>
+                            </div>
+                            <input type="range" id="input-water" min="0" max="100" value="65" class="custom-range">
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-cloud-rain"></i> 12-Hour Sequential Rainfall Observations (mm)</label>
+                            <div class="rainfall-inputs-grid" id="rainfall-inputs-container">
+                                <!-- 12 inputs rendered here -->
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-block btn-lg" id="btn-run-prediction">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Calculate Flood Risk Prediction
+                        </button>
+                    </div>
+
+                    <!-- Output & Visualizations -->
+                    <div class="prediction-results-stack">
+                        
+                        <!-- Prediction Card Result -->
+                        <div class="glass-card panel result-card" id="result-card-container">
+                            <div class="result-placeholder" id="result-placeholder">
+                                <i class="fa-solid fa-calculator placeholder-icon"></i>
+                                <h3>Ready to Predict</h3>
+                                <p>Adjust inputs or choose a preset scenario above, then click <strong>"Calculate Flood Risk Prediction"</strong>.</p>
+                            </div>
+
+                            <div class="result-content hidden" id="result-content">
+                                <div class="result-top">
+                                    <div class="risk-gauge-container">
+                                        <div class="gauge-circle" id="gauge-circle">
+                                            <div class="gauge-inner">
+                                                <span class="gauge-number" id="risk-pct-text">0.0%</span>
+                                                <span class="gauge-label">Flood Risk</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="status-summary">
+                                        <div class="safety-status-row">
+                                            <span class="safety-pill safe" id="safety-status-pill">
+                                                <i class="fa-solid fa-shield-check" id="safety-icon"></i>
+                                                <span id="safety-text">SAFE</span>
+                                            </span>
+                                            <span class="badge" id="risk-badge">SAFE CONDITION</span>
+                                        </div>
+                                        <h2 id="result-title">Safe Condition</h2>
+                                        <p id="result-desc">Model predicts low flood probability for the specified timeframe.</p>
+                                        <div class="execution-meta">
+                                            <span><i class="fa-solid fa-clock"></i> Latency: <strong id="exec-time">12ms</strong></span>
+                                            <span><i class="fa-solid fa-microchip"></i> Backend Engine: <strong>PyTorch CNN-LSTM</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-breakdown-grid">
+                                    <div class="breakdown-item">
+                                        <span class="b-label">Spatial Risk (CNN)</span>
+                                        <div class="progress-bg"><div class="progress-bar cnn-bar" id="bar-spatial" style="width: 0%"></div></div>
+                                        <span class="b-val" id="val-spatial">0%</span>
+                                    </div>
+                                    <div class="breakdown-item">
+                                        <span class="b-label">Temporal Surge (LSTM)</span>
+                                        <div class="progress-bg"><div class="progress-bar lstm-bar" id="bar-temporal" style="width: 0%"></div></div>
+                                        <span class="b-val" id="val-temporal">0%</span>
+                                    </div>
+                                </div>
+
+                                <!-- Action Recommendations -->
+                                <div class="recommendations-box">
+                                    <h4><i class="fa-solid fa-user-shield"></i> Recommended Action Plan</h4>
+                                    <ul id="recommendations-list">
+                                        <!-- Dynamic list -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Satellite Preview & Chart Panel -->
+                        <div class="glass-card panel">
+                            <div class="panel-header">
+                                <h3><i class="fa-solid fa-chart-line"></i> Input Visualizations</h3>
+                            </div>
+                            <div class="visuals-grid">
+                                <div class="sat-preview-box">
+                                    <span class="box-title"><i class="fa-solid fa-satellite"></i> Synthetic Satellite Input</span>
+                                    <img id="sat-img-preview" src="" alt="Satellite Canvas" class="sat-img">
+                                    <small class="sat-caption">CNN 32x32 RGB Feature Map</small>
+                                </div>
+                                <div class="chart-box">
+                                    <canvas id="rainfallChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Presentation Slide Integration: Information about Chennai & Environmental Parameters -->
+                        <div class="glass-card panel chennai-info-section">
+                            <div class="panel-header">
+                                <h3 id="info-location-header"><i class="fa-solid fa-city"></i> Information about Chennai</h3>
+                                <span class="badge badge-primary">Review Presentation Layout</span>
+                            </div>
+                            <div class="chennai-grid">
+                                <!-- Flood Prediction Status Card -->
+                                <div class="prediction-status-card">
+                                    <div class="status-icon-wrap">
+                                        <i class="fa-solid fa-wave-square"></i>
+                                    </div>
+                                    <h4>Flood Prediction</h4>
+                                    <div class="prediction-large-val safe" id="slide-prediction-text">Safe</div>
+                                    <p class="prediction-sub">Prediction: Safe / Unsafe</p>
+                                </div>
+
+                                <!-- Environmental Parameters Grid -->
+                                <div class="env-parameters-card">
+                                    <h4>Environmental Parameters</h4>
+                                    <div class="env-metrics-grid">
+                                        <div class="env-box">
+                                            <i class="fa-solid fa-temperature-half icon-temp"></i>
+                                            <span class="env-val" id="env-temp">85.45</span>
+                                            <span class="env-lbl">Temperature (°F)</span>
+                                        </div>
+                                        <div class="env-box">
+                                            <i class="fa-solid fa-temperature-arrow-up icon-maxtemp"></i>
+                                            <span class="env-val" id="env-max-temp">92.90</span>
+                                            <span class="env-lbl">Max Temperature (°F)</span>
+                                        </div>
+                                        <div class="env-box">
+                                            <i class="fa-solid fa-wind icon-wind"></i>
+                                            <span class="env-val" id="env-wind">19.59</span>
+                                            <span class="env-lbl">Windspeed (mph)</span>
+                                        </div>
+                                        <div class="env-box">
+                                            <i class="fa-solid fa-cloud icon-cloud"></i>
+                                            <span class="env-val" id="env-cloud">48.27</span>
+                                            <span class="env-lbl">Cloud Cover (%)</span>
+                                        </div>
+                                        <div class="env-box">
+                                            <i class="fa-solid fa-cloud-showers-heavy icon-precip"></i>
+                                            <span class="env-val" id="env-precip">0.30</span>
+                                            <span class="env-lbl">Precipitation (mm)</span>
+                                        </div>
+                                        <div class="env-box">
+                                            <i class="fa-solid fa-droplet icon-humidity"></i>
+                                            <span class="env-val" id="env-humidity">73.89</span>
+                                            <span class="env-lbl">Humidity (%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Emergency Alert System Panel (Email, SMS & WhatsApp) -->
+                        <div class="glass-card panel alert-system-panel mt-4">
+                            <div class="panel-header">
+                                <div>
+                                    <h3><i class="fa-solid fa-bell"></i> Emergency Alert Dispatcher</h3>
+                                    <p class="subtitle">Automatic and On-Demand Notifications via Email, SMS & WhatsApp</p>
+                                </div>
+                                <span class="badge badge-danger"><i class="fa-solid fa-shield-virus"></i> Active Alert Dispatcher</span>
+                            </div>
+
+                            <div class="alert-dispatch-grid">
+                                <div class="alert-input-group">
+                                    <label><i class="fa-solid fa-envelope"></i> Email Recipient Address</label>
+                                    <input type="email" id="alert-email-input" class="form-control" value="haran6124@gmail.com">
+                                </div>
+
+                                <div class="alert-input-group">
+                                    <label><i class="fa-solid fa-phone"></i> Mobile / Phone Number</label>
+                                    <input type="text" id="alert-phone-input" class="form-control" value="9952613367">
+                                </div>
+                            </div>
+
+                            <div class="alert-actions-row">
+                                <button class="btn btn-outline" id="btn-send-email">
+                                    <i class="fa-solid fa-paper-plane"></i> Send Email Alert
+                                </button>
+                                <button class="btn btn-outline" id="btn-send-sms">
+                                    <i class="fa-solid fa-comment-sms"></i> Send SMS Alert
+                                </button>
+                                <button class="btn btn-outline btn-whatsapp" id="btn-send-whatsapp">
+                                    <i class="fa-brands fa-whatsapp"></i> Send WhatsApp Alert
+                                </button>
+                                <button class="btn btn-primary btn-alert-all" id="btn-send-all-alerts">
+                                    <i class="fa-solid fa-bullhorn"></i> DISPATCH ALL ALERTS NOW
+                                </button>
+                            </div>
+
+                            <div class="alert-status-box hidden" id="alert-status-banner">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <div class="alert-status-content">
+                                    <span id="alert-status-msg">Alert dispatched successfully to haran6124@gmail.com and 9952613367!</span>
+                                    <div class="alert-quick-links mt-2" id="alert-quick-links">
+                                        <!-- Rendered dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- TAB 3: RISK HEATMAP -->
+            <section id="tab-heatmap" class="tab-pane">
+                <div class="glass-card panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3><i class="fa-solid fa-map"></i> Regional Flood Risk Spatial Heatmap</h3>
+                            <p class="subtitle">Location-wise spatial risk matrix across geographical grid coordinates</p>
+                        </div>
+                        <button class="btn btn-outline" id="btn-refresh-heatmap">
+                            <i class="fa-solid fa-rotate-right"></i> Refresh Heatmap
+                        </button>
+                    </div>
+
+                    <div class="heatmap-container-layout">
+                        <!-- Heatmap Grid -->
+                        <div class="heatmap-grid-wrapper">
+                            <div class="grid-header-lon">Longitude Axis &rarr;</div>
+                            <div class="heatmap-main-area">
+                                <div class="grid-header-lat">&larr; Latitude Axis</div>
+                                <div class="grid-8x8" id="heatmap-grid-container">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Heatmap Legend & Zone Info Card -->
+                        <div class="heatmap-side-info">
+                            <div class="glass-card legend-card">
+                                <h4>Risk Severity Legend</h4>
+                                <div class="legend-scale">
+                                    <div class="legend-item">
+                                        <span class="legend-color high"></span>
+                                        <span>High Risk (≥ 70%)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color mod"></span>
+                                        <span>Moderate (45% - 69%)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-color low"></span>
+                                        <span>Safe (&lt; 45%)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="glass-card zone-detail-card" id="zone-detail-card">
+                                <h4><i class="fa-solid fa-circle-info"></i> Grid Cell Inspection</h4>
+                                <div class="zone-details-content" id="zone-details-content">
+                                    <p class="text-muted">Hover or click any cell in the heatmap grid to view exact coordinates and risk level.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: MODEL ANALYTICS -->
+            <section id="tab-analytics" class="tab-pane">
+                <div class="grid-2-col">
+                    <div class="glass-card panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-square-poll-vertical"></i> Performance Evaluation</h3>
+                        </div>
+                        <div class="metrics-full-grid" id="analytics-metrics-container">
+                            <!-- Populated from API -->
+                        </div>
+                        <div class="chart-wrapper mt-4">
+                            <canvas id="metricsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-card panel">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-circle-nodes"></i> Model Hyperparameters & Specs</h3>
+                        </div>
+                        <div class="specs-table-wrapper">
+                            <table class="specs-table" id="analytics-specs-table">
+                                <!-- Populated from API -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: PREDICTION LOGS -->
+            <section id="tab-history" class="tab-pane">
+                <div class="glass-card panel">
+                    <div class="panel-header">
+                        <div>
+                            <h3><i class="fa-solid fa-history"></i> Prediction History Log</h3>
+                            <p class="subtitle">Log of recent flood predictions executed during session</p>
+                        </div>
+                        <button class="btn btn-outline btn-danger-text" id="btn-clear-history">
+                            <i class="fa-solid fa-trash-can"></i> Clear History
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th># ID</th>
+                                    <th>Timestamp</th>
+                                    <th>Location</th>
+                                    <th>Avg Rain</th>
+                                    <th>Water Body %</th>
+                                    <th>Risk %</th>
+                                    <th>Safety Status</th>
+                                    <th>Alert Level</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">No prediction logs yet. Run a prediction to populate history.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js"></script>
+</body>
+</html>
